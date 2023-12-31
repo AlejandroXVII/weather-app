@@ -1,37 +1,43 @@
 import "./style.css";
 
 function showWeatherDOM(weatherData) {
-  const $localName = document.getElementById("location-name");
-  const $currentLastUpdate = document.getElementById("current-last-updated");
-  const $currentTempCF = document.getElementById("current-temp-c-f");
-  const $currentConditionText = document.getElementById(
-    "current-condition-text",
-  );
-  const $currentFeelsLikeCF = document.getElementById("current-feels-like-c-f");
-  const $currentHumidity = document.getElementById("current-humidity");
-  const $currentConditionIcon = document.getElementById(
-    "current-condition-icon",
-  );
+  let $localName = document.getElementById("location-name");
+  let $currentLastUpdate = document.getElementById("current-last-updated");
+  let $currentTempCF = document.getElementById("current-temp-c-f");
+  let $currentConditionText = document.getElementById("current-condition-text");
+  let $currentFeelsLikeCF = document.getElementById("current-feels-like-c-f");
+  let $currentHumidity = document.getElementById("current-humidity");
 
   let name = weatherData.location.name;
   let lastUpdate = weatherData.current.last_updated;
-  let tempC = weatherData.current.temp_c;
-  let tempF = weatherData.current.temp_f;
+  let tempC = weatherData.current.temp_c + "°";
+  let tempF = weatherData.current.temp_f + "°";
   let conditionText = weatherData.current.condition.text;
-  let feelsLikeC = weatherData.current.feelslike_c;
-  let feelsLikeF = weatherData.current.feelslike_f;
-  let humidity = weatherData.current.humidity;
-  let conditionIcon = weatherData.current.condition.icon;
+  let feelsLikeC = "Feel like: " + weatherData.current.feelslike_c + "C";
+  let feelsLikeF = "Feel like: " + weatherData.current.feelslike_f + "F";
+  let humidity = "Humidity: " + weatherData.current.humidity;
 
   $localName.textContent = name;
   $currentLastUpdate.textContent = lastUpdate;
-  $currentTempCF.textContent = tempC + "°";
   $currentConditionText.textContent = conditionText;
-  $currentFeelsLikeCF.textContent = "Feel like: " + feelsLikeC;
-  $currentHumidity.textContent = "Humidity: " + humidity;
-  $currentConditionIcon.src = "https:" + conditionIcon;
+  $currentHumidity.textContent = humidity;
 
-  console.log(weatherData);
+  const changeCelFar = () => {
+    if ($slider.checked) {
+      $currentTempCF.textContent = tempF;
+      $currentFeelsLikeCF.textContent = feelsLikeF;
+    } else {
+      $currentTempCF.textContent = tempC;
+      $currentFeelsLikeCF.textContent = feelsLikeC;
+    }
+  };
+  const $slider = document.querySelector("#slider-input");
+  $slider.addEventListener("click", changeCelFar);
+  $slider.checked = "true";
+  if ($slider.checked) {
+    $currentTempCF.textContent = tempF;
+    $currentFeelsLikeCF.textContent = feelsLikeF;
+  }
 }
 
 async function getWeather(city) {
