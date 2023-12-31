@@ -1,6 +1,6 @@
 import "./style.css";
 
-function showWeather(weatherData) {
+function showWeatherDOM(weatherData) {
   const $localName = document.getElementById("location-name");
   const $currentLastUpdate = document.getElementById("current-last-updated");
   const $currentTempCF = document.getElementById("current-temp-c-f");
@@ -25,12 +25,11 @@ function showWeather(weatherData) {
 
   $localName.textContent = name;
   $currentLastUpdate.textContent = lastUpdate;
-  $currentTempCF.textContent = tempC;
+  $currentTempCF.textContent = tempC + "°";
   $currentConditionText.textContent = conditionText;
   $currentFeelsLikeCF.textContent = "Feel like: " + feelsLikeC;
   $currentHumidity.textContent = "Humidity: " + humidity;
-  $currentConditionIcon.src =
-    "https://cdn.weatherapi.com/weather/64x64/day/116.png"; ///change
+  $currentConditionIcon.src = "https:" + conditionIcon;
 
   console.log(weatherData);
 }
@@ -42,7 +41,16 @@ async function getWeather(city) {
     { mode: "cors" },
   );
   const weatherData = await response.json();
-  showWeather(weatherData);
+  showWeatherDOM(weatherData);
 }
 
-getWeather("venezuela");
+const $searchInput = document.querySelector("#search");
+const $searchButton = document.querySelector("#search-bar>svg");
+const $weatherContainer = document.querySelector("#weather-container");
+
+$searchButton.addEventListener("click", searchCity);
+
+function searchCity() {
+  $weatherContainer.style.display = "grid";
+  getWeather($searchInput.value);
+}
